@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="">
+
+
+    <Parameter name="clientId" override="false" value="chemnetbase.com.oidc-app-v1.f9f97cf8-dfdd-448a-ba85-2cd924e58b51"/>
+
+    <Parameter name="secret" override="false" value="zLEUTuICe0mI3HU6Ky7uehN33"/>
+    <Parameter name="callbackURI" override="false" value="http://localhost:8090/CNBtraining/openid_connect_login"/>
+
+
+    <Resource name="jdbc/Training" auth="Container" driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+              factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" initialSize="10"
+              jdbcInterceptors="org.apache.tomcat.jdbc.pool.interceptor.ConnectionState; org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer"
+              jmxEnabled="true" logAbandoned="true" maxActive="100" maxWait="10000" minEvictableIdleTimeMillis="30000"
+              minIdle="10"  removeAbandoned="true"
+              removeAbandonedTimeout="60" testOnBorrow="true" testOnReturn="false" testWhileIdle="true" timeBetweenEvictionRunsMillis="30000"
+              type="javax.sql.DataSource" url="jdbc:sqlserver://localhost:1433;databaseName=Training;encrypt=true;trustServerCertificate=true;"
+              username="hbcp_user" password="overlord"
+              validationInterval="30000" validationQuery="SELECT 1"/>
+
+</Context>

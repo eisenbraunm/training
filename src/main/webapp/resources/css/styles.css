@@ -1,0 +1,212 @@
+/*Scheme colours dark blue #1a2c42 red #be2f29 yellow #ecaf44 black #0c1115*/
+:root {
+    --schemeColourA: #a8d1f7a3;
+    --schemeColourB: #fce9d6;
+    --schemeColourC: #c4690e;
+    --schemeColourD: #005479;
+    --primary-color-text: black;
+    --text-color-secondary: black;
+    --text-color: black;
+}
+
+body.bgColour {
+    background-color: var(--schemeColourA);
+}
+
+.body {
+
+}
+
+body .ui-dialog .ui-dialog-titlebar {
+    background-color: var(--schemeColourA)
+}
+
+.title {
+    text-align: center;
+    font-size: calc(16px + .4vw);
+    font-weight: bold;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: calc(12px + .4vw);
+    font-weight: bold;
+    /*padding-top: 10px;*/
+    padding-bottom: 10px;
+}
+
+
+
+a:hover, a:focus {
+    text-decoration: none;
+}
+
+
+
+.leftMenu {
+    background: var(--schemeColourC);
+    width: 100%;
+    height: 100%;
+}
+
+@font-face {
+    font-family: 'Titillium Web';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Titillium WebLight'), local('TitilliumWeb-Light'), url(http://themes.googleusercontent.com/static/fonts/titilliumweb/v2/anMUvcNT0H1YN4FII8wpr24bNCNEoFTpS2BTjF6FB5E.woff) format('woff');
+}
+
+/*End Left Menu*/
+
+.center_content {
+    font-family: 'Titillium Web', sans-serif;
+}
+
+.center_content_with_menu {
+    margin-left: 260px;
+    font-family: 'Titillium Web', sans-serif;
+}
+
+/*Font colours*/
+.fcSchemeC {
+    color: var(--schemeColourC)
+}
+
+.borderColourC {
+    border-color: var(--schemeColourC)
+}
+
+.red {
+    color: red !important
+}
+
+.label-colour {
+    color: var(--schemeColourD)
+}
+
+.dialogFooter {
+    border-top: 0 none;
+    /*background: var(--schemeColourA);*/
+    color: #495057;
+    padding: 1.5rem 1.5rem 0 0;
+    margin: 0;
+    text-align: right;
+}
+
+
+.centre-align-margin {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.centre-div {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.menuSize {
+    width: 550px;
+
+}
+
+.tableSize {
+    width: 1000px;
+
+}
+
+
+.small-button {
+    height: 1.8rem !important;
+    width: 1.8rem !important;
+}
+
+.ui-outputlabel {
+    font-weight: bold;
+    color: #0077aa;
+}
+
+
+
+
+.no-margin {
+    margin: 0 !important;
+}
+
+button.ui-button, .ui-splitbutton {
+    margin-right: .5rem;
+}
+
+
+
+.text-align-left {
+    text-align: left
+}
+
+.text-align-right {
+    text-align: right
+}
+
+
+.no-header .ui-dataview-header {
+    display: none
+}
+
+.max-content > .ui-menu-child {
+    width: max-content !important;
+}
+
+
+
+
+
+
+.ui-growl {
+    position: fixed !important;
+    /*top: 60px !important;*/
+    /*right: 100px !important;*/
+    width: 700px !important;
+}
+
+
+.ui-growl-message {
+    padding: 0 0 5px 0 !important;
+    width: 92% !important;
+    /*float: left !important;*/
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.orderList {
+    width: 800px;
+    height: 300px;
+}
+
+.orderList .ui-orderlist-list {
+    width: auto !important;
+    height: auto !important;
+    max-height: 700px !important;
+}
+
+.orderList .ui-orderlist-caption {width: auto !important;}
+
+.link {
+    color: var(--schemeColourD) !important;
+    /*text-decoration: underline !important;*/
+}
+
+.centreDialog {
+    position: absolute !important;
+    float: left !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+}
+

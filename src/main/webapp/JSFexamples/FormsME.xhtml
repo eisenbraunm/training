@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang = "en" lang = "en"
+      xmlns:h = "http://xmlns.jcp.org/jsf/html"
+      xmlns:ui = "http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f = "http://xmlns.jcp.org/jsf/core"
+      xmlns:p = "http://primefaces.org/ui">
+
+<h:head>
+    <title>Training Main Menu</title>
+
+    <h:outputStylesheet name="css/styles.css#{GlobalBean.randomQueryString}"/>
+</h:head>
+
+<h:body style="background-color: #a8d1f7a3">
+
+    <h:form id="growlForm">
+        <p:growl id="growl" showDetail="true" autoUpdate="false" life="25000" widgetVar="growlwid"/>
+    </h:form>
+
+    <h:form id="menuForm">
+        <div class=" tableSize center" >
+
+            <p:card >
+                <p:commandLink   action="#{MenuBean.gotoMainMenu()}" value="Return to Main Menu" />
+            </p:card>
+
+        </div>
+
+    </h:form>
+
+
+
+        <div class="tableSize center"  style="padding-top: 50px">
+
+            <p:card title="Add a compound">
+
+                <h:form id="AddCompoundForm" >
+
+                        <f:facet name="title">
+                            Add User
+                        </f:facet>
+                        <p:panelGrid styleClass="ui-noborder">
+                            <p:row>
+                                <p:column colspan="2">
+                                    <div class="field">
+                                        <p:outputLabel value="Name: " for="addCompoundName" styleClass="block"/>
+                                        <p:inputText maxlength="500" id="addCompoundName" required="true" requiredMessage="Compound name is a required field" styleClass="block"
+                                                     value="#{JSFformMegBean.addCompoundEnt.name}">
+                                            <f:validator validatorId="com.cnb.training.ui.validator.HTMLvalidator"/>
+                                        </p:inputText>
+                                    </div>
+                                </p:column>
+
+                            </p:row>
+
+                        </p:panelGrid>
+
+
+                    <div style="clear: both" >
+                        <p:commandButton value="Save" id="SaveCompound" action="#{JSFformMegBean.addCompound()}" accesskey="" update=":growlForm:growl  AddCompoundForm" icon="pi pi-save" />
+                    </div>
+                </h:form>
+            </p:card>
+
+
+
+
+
+
+
+
+
+
+
+            <p:card style="padding: 2em">
+                <f:facet name="title">Compounds Read from the database
+                </f:facet>
+                <h:form id="CompoundsTableForm" >
+                <p:dataTable id="CompoundsTable" value="#{JSFformMegBean.compoundList}" var="compound" selectionMode="single" selection="#{PropertyTableBean.propertyTableSelectEnt}"
+                             rowKey="#{compound.ID}" widgetVar="CompoundTable" emptyMessage="No compounds  present" size="small" tableStyle="width:100%">
+
+                    <p:column headerText="Compound ID">
+                        <h:outputText value="#{compound.ID}" escape="false"/>
+                    </p:column>
+
+                    <p:column headerText="Compound Name">
+                        <h:outputText value="#{compound.name}" escape="false"/>
+                    </p:column>
+                </p:dataTable>
+
+                </h:form>
+
+            </p:card>
+
+
+
+        </div>
+
+
+
+
+
+
+
+
+</h:body>
+
+</html>
