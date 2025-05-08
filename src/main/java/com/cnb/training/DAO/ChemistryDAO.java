@@ -1,7 +1,6 @@
 package com.cnb.training.DAO;
 
 
-
 import com.cnb.training.connectid.database.DatabaseConnectDAO;
 
 import com.cnb.training.ui.GlobalBean;
@@ -26,14 +25,11 @@ public class ChemistryDAO extends DatabaseConnectDAO implements DataAccess {
     private Logger log = LogManager.getLogger(ChemistryDAO.class);
 
 
-
     public ArrayList<CompoundEnt> selectCompoundList(Connection connection) throws Exception {
 
-        String sqlStatement = "SELECT        ID, NAME " +
-                "FROM            TBL_COMPOUND " +
-                "ORDER BY NAME";
+        String sqlStatement = "SELECT ID, NAME FROM TBL_COMPOUND ORDER BY NAME";
 
-        ArrayList<CompoundEnt> results =new ArrayList<>();
+        ArrayList<CompoundEnt> results = new ArrayList<>();
         try (PreparedStatement tStatement = connection.prepareStatement(sqlStatement, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
             try (ResultSet tResultSet = tStatement.executeQuery();) {
                 while (tResultSet.next()) {
@@ -42,13 +38,8 @@ public class ChemistryDAO extends DatabaseConnectDAO implements DataAccess {
             }
 
         } catch (SQLException e) {
-
-
-
-
-            log.error("selectCompoundList ",e );
+            log.error("selectCompoundList ", e);
         }
-
         return results;
     }
 
@@ -65,11 +56,10 @@ public class ChemistryDAO extends DatabaseConnectDAO implements DataAccess {
 
         ent.setName(tResultSet.getString("NAME"));
 
-
         return ent;
     }
 
-    public Long addCompound(CompoundEnt ent, Connection connection)throws Exception {
+    public Long addCompound(CompoundEnt ent, Connection connection) throws Exception {
 
         String sqlStatement = "INSERT INTO  TBL_COMPOUND( NAME) VALUES(?)";
 
@@ -80,10 +70,9 @@ public class ChemistryDAO extends DatabaseConnectDAO implements DataAccess {
 
             tStatement.executeUpdate();
 
-            try (ResultSet generatedKeys  = tStatement.getGeneratedKeys();) {
-
+            try (ResultSet generatedKeys = tStatement.getGeneratedKeys();) {
                 if (generatedKeys.next()) {
-                    compoundId  = generatedKeys.getLong(1);
+                    compoundId = generatedKeys.getLong(1);
                 }
             }
 

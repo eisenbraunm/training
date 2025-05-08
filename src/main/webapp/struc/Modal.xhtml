@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Ketcher Demo</title>
+
+    <h:outputStylesheet name="css/styles.css#{GlobalBean.randomQueryString}"/>
+</h:head>
+
+<h:body style="background-color: #a8d1f7a3">
+    <p:card id="ketcherCard" styleClass="mt-4">
+        <div class="columns">
+            <div>
+                <button>Open Modal</button>
+                <div class="inputs">
+                    <div>
+                        <label>Height</label>
+                        <input placeholder="height" class="height"/>
+                    </div>
+                    <div>
+                        <label>Width</label>
+                        <input placeholder="width" class="width"/>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <textarea id="mol" class="molecule" placeholder="Insert a molecule here..."></textarea>
+            </div>
+        </div>
+        <pre id="output" style="background-color: #ddd;"></pre>
+    </p:card>
+
+    <script defer="defer">
+        const button = document.querySelector('button')
+        const textarea = document.querySelector('.molecule')
+        const width = document.querySelector('.width')
+        const height = document.querySelector('.height')
+        const modalContent = `
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <iframe
+            width="784"
+            height="624"
+            id="frmKetcher"
+            src="./../ketcher/index.html"
+            sandbox="allow-scripts allow-same-origin"
+            ></iframe>
+            <p><button onclick="imageBySMILES();">Generate Image from SMILES Format</button></p>
+        </div>
+      `
+        let modal
+        let closeIcon;
+        let iframe;
+
+        function closeModal() {
+            frm = document.getElementById("frmKetcher");
+            ketcher = frm.contentWindow.ketcher;
+            promise = ketcher.getMolfile();
+            promise.then(
+                function (value) {
+                    mymess = value;
+                },
+                function (error) {
+                    mymess = error.toString();
+                }
+            );
+
+            // alert(mymess);
+
+            closeIcon.removeEventListener('click', closeModal)
+            modal.remove()
+        }
+
+
+        function createModal() {
+            modal = document.createElement('div')
+            modal.classList.add('modal')
+            modal.innerHTML = modalContent
+            document.body.appendChild(modal)
+
+            closeIcon = document.querySelector('.close')
+            iframe = document.getElementById('frmKetcher')
+            iframe.style.height = height.value + 'px'
+            iframe.style.width = width.value + 'px'
+
+            closeIcon.addEventListener('click', closeModal)
+        }
+
+        button.onclick = createModal
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                closeModal()
+            }
+        }
+
+        window.addEventListener('message', (event) => {
+            if (event.data.eventType === 'init') {
+                iframe.contentWindow.ketcher.setMolecule(textarea.value)
+            }
+        })
+    </script>
+
+    <p>
+        <button onclick="imageBySMILES();">Generate Image from SMILES Format</button>
+    </p>
+    <p>
+        <button onclick="imageByFetcher();">Generate Image from Ketcher Format</button>
+    </p>
+    <p>Output:</p>
+    <img id="outputImg"/>
+
+    <script>
+        var ketcher = null;
+        var display = document.getElementById("outputImg");
+        const format = "png"; // or "svg"
+
+        function imageBySMILES() {
+            let frm = document.getElementById("frmKetcher");
+            ketcher = frm.contentWindow.ketcher;
+            display.innerHTML = "";
+            let promise = ketcher.getSmiles();
+            outputImage(promise);
+            exportMolfile();
+            setTimeout(closeModal, 500);
+        }
+
+        function imageByFetcher() {
+            let frm = document.getElementById("frmKetcher");
+            ketcher = frm.contentWindow.ketcher;
+            display.innerHTML = "";
+            let promise = ketcher.getKet();
+            outputImage(promise);
+        }
+
+        function outputImage(promise) {
+            promise = promise.then(
+                function (value) {
+                    let opts = {outputFormat: format, backgroundColor: "255, 255, 255"};
+                    return ketcher.generateImage(value, opts);
+                },
+                function (error) {
+                    window.alert(error);
+                }
+            );
+
+            promise.then(
+                function (value) {
+                    display.src = URL.createObjectURL(value);
+                },
+                function (error) {
+                    window.alert(error);
+                }
+            );
+        }
+    </script>
+    <script>
+        function exportMolfile() {
+            frm = document.getElementById("frmKetcher");
+            ketcher = frm.contentWindow.ketcher;
+            promise = ketcher.getMolfile();
+            promise.then(
+                function(value) {
+                    document.getElementById("mol").innerHTML = value;
+                    document.getElementById("output").innerHTML = value;
+                },
+                function(error) {
+                    document.getElementById("mol").innerHTML = error.toString();
+                }
+            );
+        }
+    </script>
+</h:body>
+
+</html>

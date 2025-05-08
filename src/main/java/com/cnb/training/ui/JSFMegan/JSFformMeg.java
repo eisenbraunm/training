@@ -51,10 +51,10 @@ public class JSFformMeg implements Serializable {
 
     @PostConstruct
     public void init() {
-// load the data
+        // load the data
         loadCompounds();
         //you must create a new instance of the compound ent so it can be used when adding a compound
-        this.addCompoundEnt= new CompoundEnt();
+        this.addCompoundEnt = new CompoundEnt();
     }
 
 
@@ -103,9 +103,9 @@ public class JSFformMeg implements Serializable {
             }
 
             //now clear the add compound entity so it does not appear with the previous values when next called
-            this.addCompoundEnt= new CompoundEnt();
+            this.addCompoundEnt = new CompoundEnt();
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Fail!", "New compound cound not be added."+ e.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Fail!", "New compound cound not be added." + e.getMessage()));
             if (instance.isAjaxRequest()) {
 
                 instance.ajax().update("growlForm");

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Ketcher Demo</title>
+
+    <h:outputStylesheet name="css/styles.css#{GlobalBean.randomQueryString}"/>
+</h:head>
+
+<h:body style="background-color: #a8d1f7a3">
+    <p:card id="ketcherCard" styleClass="mt-4">
+        <iframe id="frmKetcher" src="./../ketcher/index.html" style="width: 680px; height: 400px;"></iframe>
+
+        <p><button onclick="exportMolfile();">Export Molecule in Molfile</button></p>
+        <pre id="output" style="background-color: #ddd;"></pre>
+    </p:card>
+
+    <script>
+        function exportMolfile() {
+            frm = document.getElementById("frmKetcher");
+            ketcher = frm.contentWindow.ketcher;
+            promise = ketcher.getMolfile();
+            promise.then(
+                function(value) {
+                    document.getElementById("output").innerHTML = value;
+                },
+                function(error) {
+                    document.getElementById("output").innerHTML = error.toString();
+                }
+            );
+        }
+    </script>
+
+    <p>Create a chemical structure, then click generate buttons below the editor:</p>
+
+
+    <p><button onclick="imageBySMILES();">Generate Image from SMILES Format</button></p>
+    <p><button onclick="imageByFetcher();">Generate Image from Ketcher Format</button></p>
+    <p>Output:</p>
+    <img id="outputImg" />
+
+    <script>
+        var ketcher = null;
+        var display = document.getElementById("outputImg");
+        const format = "png"; // or "svg"
+
+        function imageBySMILES() {
+            let frm = document.getElementById("frmKetcher");
+            ketcher = frm.contentWindow.ketcher;
+            display.innerHTML = "";
+            let promise = ketcher.getSmiles();
+            outputImage(promise);
+        }
+
+        function imageByFetcher() {
+            let frm = document.getElementById("frmKetcher");
+            ketcher = frm.contentWindow.ketcher;
+            display.innerHTML = "";
+            let promise = ketcher.getKet();
+            outputImage(promise);
+        }
+
+        function outputImage(promise) {
+            promise = promise.then(
+                function(value) {
+                    let opts = {outputFormat: format, backgroundColor: "255, 255, 255"};
+                    return ketcher.generateImage(value, opts);
+                },
+                function(error) {
+                    window.alert(error);
+                }
+            );
+
+            promise.then(
+                function(value) {
+                    display.src  = URL.createObjectURL(value);
+                },
+                function(error) {
+                    window.alert(error);
+                }
+            );
+        }
+    </script>
+</h:body>
+
+</html>

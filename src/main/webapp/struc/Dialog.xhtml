@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Ketcher Demo</title>
+
+    <h:outputStylesheet name="css/styles.css#{GlobalBean.randomQueryString}"/>
+</h:head>
+
+<h:body style="background-color: #a8d1f7a3">
+    <p:commandButton value="Open Dia" oncomplete="PF('dlgKetcher').show()" />
+
+
+    <textarea id="mol" class="molecule" placeholder="Insert a molecule here..."></textarea>
+
+    <h:form id="molForm" prependId="false">
+        <h2>Bean bound value</h2>
+        <p:inputTextarea id="molFile" value="#{DialogBean.molFile}" />
+    </h:form>
+
+
+    <p>Output:</p><br/>
+    <img id="outputImg"/><br/>
+    <pre id="smiles" style="background-color: #ddd;"></pre><br/>
+    <h2>Base64 image</h2>
+    <img id="output" />
+
+
+    <script>
+        var ketcher = null;
+        var display = document.getElementById("outputImg");
+        const format = "png"; // or "svg"
+
+        function imageBySMILES() {
+            let frm = document.getElementById("frmKetcher");
+            ketcher = frm.contentWindow.ketcher;
+            display.innerHTML = "";
+            let promise = ketcher.getSmiles();
+            outputImage(promise);
+            // exportMolfile();
+            // setTimeout(closeModal, 500);
+        }
+
+        function imageByFetcher() {
+            let frm = document.getElementById("frmKetcher");
+            ketcher = frm.contentWindow.ketcher;
+            display.innerHTML = "";
+            let promise = ketcher.getKet();
+            outputImage(promise);
+        }
+
+        function outputImage(promise) {
+            promise = promise.then(
+                function (value) {
+                    let opts = {outputFormat: format, backgroundColor: "255, 255, 255"};
+                    return ketcher.generateImage(value, opts);
+                },
+                function (error) {
+                    window.alert(error);
+                }
+            );
+
+            promise.then(
+                function (value) {
+                    display.src = URL.createObjectURL(value);
+                },
+                function (error) {
+                    window.alert(error);
+                }
+            );
+        }
+
+        $(document).ready(function handleDocumentReady(e) {
+            $('#cmdBtn').bind('click', function () {
+                exportMolfile();
+            });
+        });
+
+    </script>
+    <script>
+
+    </script>
+    <script>
+        function exportMolfile() {
+            frm = document.getElementById("frmKetcher");
+            ketcher = frm.contentWindow.ketcher;
+            promise = ketcher.getMolfile();
+            promise.then(
+                function(value) {
+                    document.getElementById("mol").innerHTML = value;
+                    document.getElementById("molFile").innerHTML = value;
+                },
+                function(error) {
+                    document.getElementById("mol").innerHTML = error.toString();
+                }
+            );
+            // let smiles = ketcher.getSmiles();
+            // outputImage(smiles);//now generate a png
+            generate();
+            PF('dlgKetcher').hide()
+        }
+    </script>
+
+    <script>
+
+        function generate() {
+            frm = document.getElementById("frmKetcher");
+            ketcher = frm.contentWindow.ketcher;
+            indigo = ketcher.indigo;
+
+            promiseSmiles = ketcher.getSmiles();
+            promiseOutput = promiseSmiles.then(consumeSmiles, consumeSmiles);
+            promiseOutput.then(consumeOutput, consumeOutput);
+        }
+
+        function consumeSmiles(result) {
+            document.getElementById("smiles").innerHTML = result;
+            opts = {outputFormat: "png", backgroundColor: "255, 255, 255"};
+            return indigo.generateImageAsBase64(result, opts);
+        }
+
+        function consumeOutput(result) {
+            src = "data:image/png;base64,"+result;
+            document.getElementById("output").src = src;
+        }
+    </script>
+
+    <p:dialog id="DrawStructureDia2" dynamic="false" header="Structure Draw" modal="true" widgetVar="dlgKetcher" resizable="true" showEffect="fade" hideEffect="fade" styleClass="dialog-scroll-fix">
+        <h:form id="DrawStructureForm2" prependId="false">
+            <iframe
+                    width="784"
+                    height="624"
+                    id="frmKetcher"
+                    src="./../ketcher/index.html"
+                    sandbox="allow-scripts allow-same-origin"
+            ></iframe>
+            <br/>
+
+            <p:commandButton id="cmdBtn" type="button" value="Transfer Mol and Image" update="@form :molForm" immediate="true" /><br/>
+
+        </h:form>
+    </p:dialog>
+</h:body>
+</html>

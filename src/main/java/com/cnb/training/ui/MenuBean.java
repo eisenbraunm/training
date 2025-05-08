@@ -14,7 +14,7 @@ public class MenuBean {
 
         FacesContext.getCurrentInstance().getApplication().getNavigationHandler().handleNavigation(FacesContext.getCurrentInstance(), null, "/connectid/OpenAthensRequest.xhtml?faces-redirect=true");
 
-      //  return "OPENATHENS";
+        //  return "OPENATHENS";
     }
 /*  this is an alternative, using the faces-config - but you do not get the address in the browser
     public String gotoOpenAthens() {
@@ -31,14 +31,21 @@ public class MenuBean {
     }
 
 
-
     public void gotoFormsME() {
 
         FacesContext.getCurrentInstance().getApplication().getNavigationHandler().handleNavigation(FacesContext.getCurrentInstance(), null, "/JSFexamples/FormsME.xhtml?faces-redirect=true");
 
     }
 
+    public void gotoStrucDraw() {
+        FacesContext.getCurrentInstance().getApplication().getNavigationHandler().handleNavigation(FacesContext.getCurrentInstance(), null, "/struc/StrucDraw.xhtml?faces-redirect=true");
+    }
 
+    public void gotoModal() {
+        FacesContext.getCurrentInstance().getApplication().getNavigationHandler().handleNavigation(FacesContext.getCurrentInstance(), null, "/struc/Modal.xhtml?faces-redirect=true");
+    }
 
-
+    public void gotoDialog() {
+        FacesContext.getCurrentInstance().getApplication().getNavigationHandler().handleNavigation(FacesContext.getCurrentInstance(), null, "/struc/Dialog.xhtml?faces-redirect=true");
+    }
 }
